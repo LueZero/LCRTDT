@@ -1,6 +1,7 @@
 #coding=utf-8
 
 import os
+from traceback import print_tb
 import numpy as np
 import pytesseract
 import operator
@@ -16,21 +17,27 @@ from time import sleep as t
 from mss import mss
 from PIL import Image
 from dotenv import load_dotenv
+
 load_dotenv()
 
 reply = os.getenv("REPLY_TEXT")
+left = int(os.getenv("LEFT"))
+top = int(os.getenv("TOP"))
+width = int(os.getenv("WIDTH"))
+height = int(os.getenv("HEIGHT"))
 
-mon = {'left': 0, 'top': 0, 'width': 400, 'height': 500}
+keyword1 = '招募'
+keyword2 = '自'
+keyword3 = '假'
+keyword4 = '採'
+keyword5 = '檢'
+keyword6 = '六'
+keyword7 = '日'
 
-# Windows 注意事項
-# C:\Program Files\Tesseract-OCR\tessdata\chi_tra.traineddata 把中文模型放入此位置，看你OCR安裝位置
+monitor = {'left': left, 'top': top, 'width': width, 'height': height}
 
-# MacOS 注意事項
-# /usr/local/Cellar/tesseract/3.05.02[版本號]/share/tessdata 把中文模型放入此位置
-# 鍵盤指令無效記得去看隱私權設定
-
-print("輸入文字:"+reply)
-print("作業系統:"+platform.system())
+print("Input Reply : "+reply)
+print("Working System : "+platform.system())
 
 if  platform.system()  == "Windows":
     pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe" 
@@ -39,45 +46,45 @@ elif platform.system()  == "Darwin":
 
 with mss() as sct:
     while True:
-        screenShot = sct.grab(mon)
+        screenShot = sct.grab(monitor)
 
-        img = Image.frombytes(
-            'RGB',
-            (screenShot.width, screenShot.height),
-            screenShot.rgb,
-        )
+        img = Image.frombytes('RGB', (screenShot.width, screenShot.height), screenShot.rgb)
 
         cv2.imshow('test', np.array(img))
 
         data = pytesseract.image_to_string(img, lang="chi_tra+eng", config='ㄆ')
-
         result = data.split()
 
-        a = [i for i,x in enumerate(result) if x.find('招募') != -1]
-        b = [i for i,x in enumerate(result) if x.find('自') != -1]
-        c = [i for i,x in enumerate(result) if x.find('假') != -1]
-        d = [i for i,x in enumerate(result) if x.find('採') != -1]
-        e = [i for i,x in enumerate(result) if x.find('檢') != -1]
-        f = [i for i,x in enumerate(result) if x.find('六') != -1]
-        g = [i for i,x in enumerate(result) if x.find('日') != -1]
+        # 模糊查詢
+        招募 = [i for i,x in enumerate(result) if x.find(keyword1) != -1]
+        自 = [i for i,x in enumerate(result) if x.find(keyword2) != -1]
+        假 = [i for i,x in enumerate(result) if x.find(keyword3) != -1]
+        採 = [i for i,x in enumerate(result) if x.find(keyword4) != -1]
+        檢 = [i for i,x in enumerate(result) if x.find(keyword5) != -1]
+        六 = [i for i,x in enumerate(result) if x.find(keyword6) != -1]
+        日 = [i for i,x in enumerate(result) if x.find(keyword7) != -1]
 
-        if len(a) > 0 and len(b) > 0 and len(c) > 0 and len(d) > 0 and len(e) > 0:
-            if len(f) > 0 or len(g) > 0:
-                pyperclip.copy(reply)
-                pyperclip.paste()
-                                
+        if (len(招募) > 0 and len(自) > 0 and len(假) > 0 and len(採) > 0 and len(檢) > 0) and (len(六) > 0 or len(日) > 0):
+            pyperclip.copy(reply)
+            pyperclip.paste()
+                            
+            if  platform.system()  == "Windows":
+                pyautogui.hotkey('ctrl', 'c', interval=0.25)
+                pyautogui.hotkey('ctrl', 'v', interval=0.25)
+            elif platform.system()  == "Darwin":
                 pyautogui.hotkey('command', 'c', interval=0.25)
                 pyautogui.hotkey('command', 'v', interval=0.25)
-                pyautogui.press('enter', interval=0.25)
+            
+            pyautogui.press('enter', interval=0.25)
 
-                print('找到關鍵字')
-                break
-            else:
-                print('找不到關鍵字')
+            print('Find keywords.')
+            break
         else:
-            print('找不到關鍵字')
+            print('Keyword not found.')
+     
 
         del data
+        del result
 
         if cv2.waitKey(33) & 0xFF in (
             ord('q'),
