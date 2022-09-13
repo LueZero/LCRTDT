@@ -26,13 +26,14 @@ top = int(os.getenv("TOP"))
 width = int(os.getenv("WIDTH"))
 height = int(os.getenv("HEIGHT"))
 
-keyword1 = '招募'
-keyword2 = '自'
-keyword3 = '假'
-keyword4 = '採'
-keyword5 = '檢'
-keyword6 = '六'
-keyword7 = '日'
+keyword1 = os.getenv("KEYWORD1_AND")
+keyword2 = os.getenv("KEYWORD2_AND")
+keyword3 = os.getenv("KEYWORD3_AND")
+keyword4 = os.getenv("KEYWORD4_AND")
+keyword5 = os.getenv("KEYWORD5_AND")
+
+keyword6 = os.getenv("KEYWORD6_OR")
+keyword7 = os.getenv("KEYWORD7_OR")
 
 monitor = {'left': left, 'top': top, 'width': width, 'height': height}
 
@@ -69,13 +70,13 @@ with mss() as sct:
             pyperclip.paste()
                             
             if  platform.system()  == "Windows":
-                pyautogui.hotkey('ctrl', 'c', interval=0.25)
-                pyautogui.hotkey('ctrl', 'v', interval=0.25)
+                pyautogui.hotkey('ctrl', 'c', interval=0.1)
+                pyautogui.hotkey('ctrl', 'v', interval=0)
             elif platform.system()  == "Darwin":
-                pyautogui.hotkey('command', 'c', interval=0.25)
-                pyautogui.hotkey('command', 'v', interval=0.25)
+                pyautogui.hotkey('command', 'c', interval=0.1)
+                pyautogui.hotkey('command', 'v', interval=0)
             
-            pyautogui.press('enter', interval=0.25)
+            pyautogui.press('enter', interval=0)
 
             print('Find keywords.')
             break
