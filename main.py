@@ -51,21 +51,21 @@ with mss() as sct:
 
         img = Image.frombytes('RGB', (screenShot.width, screenShot.height), screenShot.rgb)
 
-        cv2.imshow('test', np.array(img))
+        cv2.imshow('image', np.array(img))
 
-        data = pytesseract.image_to_string(img, lang="chi_tra+eng", config='ㄆ')
-        result = data.split()
+        imageText = pytesseract.image_to_string(img, lang="chi_tra+eng", config='ㄆ')
+        imageTexts = imageText.split()
 
         # 模糊查詢
-        招募 = [i for i,x in enumerate(result) if x.find(keyword1) != -1]
-        自 = [i for i,x in enumerate(result) if x.find(keyword2) != -1]
-        假 = [i for i,x in enumerate(result) if x.find(keyword3) != -1]
-        採 = [i for i,x in enumerate(result) if x.find(keyword4) != -1]
-        檢 = [i for i,x in enumerate(result) if x.find(keyword5) != -1]
-        六 = [i for i,x in enumerate(result) if x.find(keyword6) != -1]
-        日 = [i for i,x in enumerate(result) if x.find(keyword7) != -1]
+        result1 = [i for i,x in enumerate(imageTexts) if x.find(keyword1) != -1]
+        result2 = [i for i,x in enumerate(imageTexts) if x.find(keyword2) != -1]
+        result3 = [i for i,x in enumerate(imageTexts) if x.find(keyword3) != -1]
+        result4 = [i for i,x in enumerate(imageTexts) if x.find(keyword4) != -1]
+        result5 = [i for i,x in enumerate(imageTexts) if x.find(keyword5) != -1]
+        result6 = [i for i,x in enumerate(imageTexts) if x.find(keyword6) != -1]
+        result7 = [i for i,x in enumerate(imageTexts) if x.find(keyword7) != -1]
 
-        if (len(招募) > 0 and len(自) > 0 and len(假) > 0 and len(採) > 0 and len(檢) > 0) and (len(六) > 0 or len(日) > 0):
+        if (len(result1) > 0 and len(result2) > 0 and len(result3) > 0 and len(result4) > 0 and len(result5) > 0) and (len(result6) > 0 or len(result7) > 0):
             pyperclip.copy(reply)
             pyperclip.paste()
                             
@@ -84,8 +84,8 @@ with mss() as sct:
             print('Keyword not found.')
      
 
-        del data
-        del result
+        del imageText
+        del imageTexts
 
         if cv2.waitKey(33) & 0xFF in (
             ord('q'),
