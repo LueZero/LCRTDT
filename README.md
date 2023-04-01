@@ -1,4 +1,4 @@
-﻿# LineChatRoomTextDetectionTransponder (命令模式版)
+﻿# Line Chat Room Text Detection Transponder (命令模式版)
 
 偵測`LINE 聊天室`關鍵文字來自動回覆訊息。
 
