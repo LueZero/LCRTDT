@@ -1,6 +1,6 @@
 ﻿# Line Chat Room Text Detection Transponder (命令模式版)
 
-偵測`LINE 聊天室`關鍵文字來自動回覆訊息。
+偵測 `LINE 聊天室` 關鍵文字來自動回覆訊息。
 
 ## Initialization
 
@@ -22,14 +22,14 @@
 
 ###  Windows
 
-*  把中文模型(chi_tra.traineddata)放入位置`tesseract`安裝路徑。
+*  把中文模型(chi_tra.traineddata)放入位置 `tesseract` 安裝路徑。
 
     ```
     Windows ex: C:\Program Files\Tesseract-OCR\tessdata\chi_tra.traineddata 
     ```
 ### MacOS
 
-* 把中文模型 (chi_tra.traineddata) 放入位置`tesseract`安裝路徑。
+* 把中文模型 (chi_tra.traineddata) 放入位置 `tesseract` 安裝路徑。
    
    ```
    MacOS ex: /usr/local/Cellar/tesseract/3.05.02[版本號]/share/tessdata
